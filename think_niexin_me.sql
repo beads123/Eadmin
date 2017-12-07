@@ -16,30 +16,6 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `think_data`
---
-
-DROP TABLE IF EXISTS `think_data`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `think_data` (
-  `id` int(8) unsigned NOT NULL AUTO_INCREMENT,
-  `data` varchar(255) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `think_data`
---
-
-LOCK TABLES `think_data` WRITE;
-/*!40000 ALTER TABLE `think_data` DISABLE KEYS */;
-INSERT INTO `think_data` VALUES (1,'thinkphp'),(2,'php'),(3,'framework');
-/*!40000 ALTER TABLE `think_data` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `think_jdprice`
 --
 
@@ -55,16 +31,6 @@ CREATE TABLE `think_jdprice` (
   PRIMARY KEY (`product_number`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `think_jdprice`
---
-
-LOCK TABLES `think_jdprice` WRITE;
-/*!40000 ALTER TABLE `think_jdprice` DISABLE KEYS */;
-INSERT INTO `think_jdprice` VALUES ('西部数码(WD)蓝盘','硬盘 1T',279,675971,'2017-12-04 09:44:20'),('美商海盗船(USCorsair)','一体式水冷CPU散热器',499,842368,'2017-12-04 09:44:22'),('先马(SAMA)','机箱',299,1842778,'2017-12-04 09:44:24'),('美商海盗船(USCorsair)','电源',869,1905013,'2017-12-04 09:44:26'),('山泽(SAMZHE)','线缆',26,2743545,'2017-12-04 09:44:28'),('美商海盗船(USCORSAIR) ','内存',819,2921816,'2017-12-04 09:44:29'),('三星(SAMSUNG) 960 EVO 250G','M.2 NVMe 固态硬盘',899,3739097,'2017-12-04 09:44:32'),('英特尔(Intel) i3 8350K','CPU处理器',1499,4942637,'2017-12-04 09:44:34'),('华硕(ASUS)-GTX1070TI','显卡',4399,5486037,'2017-12-04 09:44:35'),('华硕(ASUS)PRIME Z370-P','主板',1299,5524156,'2017-12-04 09:44:37');
-/*!40000 ALTER TABLE `think_jdprice` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `think_member`
@@ -88,16 +54,6 @@ CREATE TABLE `think_member` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `think_member`
---
-
-LOCK TABLES `think_member` WRITE;
-/*!40000 ALTER TABLE `think_member` DISABLE KEYS */;
-INSERT INTO `think_member` VALUES (1,'niexin','37de952277e879459f0612a6e5ed6dea','niexin','男',791974929,'18080072724','791974929@qq.com');
-/*!40000 ALTER TABLE `think_member` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `think_task`
 --
 
@@ -112,16 +68,6 @@ CREATE TABLE `think_task` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `think_task`
---
-
-LOCK TABLES `think_task` WRITE;
-/*!40000 ALTER TABLE `think_task` DISABLE KEYS */;
-INSERT INTO `think_task` VALUES (0,1,'123','0000-00-00 00:00:00'),(1,1,'或者直接使用insertGetId方法新增数据并返回主键值：','2017-11-19 16:27:16'),(2,1,'或者直接使用insertGetId方法新增数据并返回主键值：','2017-11-19 16:27:34'),(3,1,'或者直接使用insertGetId方法新增数据并返回主键值：','2017-11-19 16:28:10'),(4,1,'123','2017-11-23 19:43:07'),(5,1,'阿三大苏打','2017-11-23 19:43:12'),(6,1,'法大师傅大师傅','2017-11-23 19:43:15'),(7,1,'123','2017-11-23 19:43:24'),(8,1,'123','2017-11-23 19:43:25'),(9,1,'123','2017-11-23 19:43:27'),(10,1,'123','2017-11-23 19:43:28'),(11,1,'123','2017-11-23 19:43:30'),(12,1,'123','2017-11-23 19:43:31');
-/*!40000 ALTER TABLE `think_task` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `think_webinfo`
@@ -146,16 +92,6 @@ CREATE TABLE `think_webinfo` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `think_webinfo`
---
-
-LOCK TABLES `think_webinfo` WRITE;
-/*!40000 ALTER TABLE `think_webinfo` DISABLE KEYS */;
-INSERT INTO `think_webinfo` VALUES (13,'https://www.liarme.com','Eadmin','ssl://smtpdm.aliyun.com',465,'system@niexin.me','PZhnx30303','ssl://pop.qq.com',995,'nxbskl@qq.com','pzhnx514614zx!@','2017-12-04 11:36:55');
-/*!40000 ALTER TABLE `think_webinfo` ENABLE KEYS */;
-UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -166,4 +102,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-12-04 16:07:55
+-- Dump completed on 2017-12-07 13:47:18

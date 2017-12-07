@@ -35,21 +35,19 @@ class Jdapi extends Controller
 			$jd_task_status=Db::name('jdprice')->where('product_number', $jd_id)->update(['product_Price' => $jd_p,'product_time'=>$thismonth]);
 			if ($jd_task_status){
 				$task=Db::name('jdprice')->where('product_number',$jd_id)->find();
-				return $task["product_Price"];
+				return array($task["product_Price"],$task["product_time"]);
 			}else
 				return "NO";
 		}
 	}
 	public function jd_modify(Request $request){
 		if ($request->method()=="POST"){
-			$jd_id=Request::instance()->post('id');
-			$jd_p=$this->jd_value($jd_id);
 			$thismonth=date('Y-m-d H:i:s');
-			$jd_task_status=Db::name('jdprice')->where('product_number', $jd_id)->update(['product_name'=>Request::instance()->post('name'),'product_category'=>Request::instance()->post('category'),'product_Price' => $jd_p,'product_time'=>$thismonth]);
+			$jd_task_status=Db::name('jdprice')->where('id', Request::instance()->post('id'))->update(['product_name'=>Request::instance()->post('name'),'product_category'=>Request::instance()->post('category'),'product_number' =>Request::instance()->post('number'),'product_time'=>$thismonth]);
 			if ($jd_task_status){
 				return "OK";
 			}else
-				return "NO";
+				return $jd_task_status;
 		}
 	}
 	public function jd_delete(Request $request){

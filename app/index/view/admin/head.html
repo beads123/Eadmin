@@ -10,6 +10,8 @@
         <link type="text/css" href="{$Request.domain}/css/theme.css" rel="stylesheet">
         <link type="text/css" href="{$Request.domain}/images/icons/css/font-awesome.css" rel="stylesheet">
         <link type="text/css" href='http://fonts.googleapis.com/css?family=Open+Sans:400italic,600italic,400,600' rel='stylesheet'>
+		<link rel="stylesheet" type="text/css" href="{$Request.domain}/css/webinfo_demo.css" />
+		<link rel="stylesheet" type="text/css" href="{$Request.domain}/css/webinfo_style.css" />
     </head>
     <body>
         <div class="navbar navbar-fixed-top">
@@ -75,15 +77,24 @@
                             <ul class="widget widget-menu unstyled">
                                 <li><a href="/index/admin/Buttons"><i class="menu-icon icon-bold"></i> Buttons </a></li>
                                 <li><a href="/index/admin/typography"><i class="menu-icon icon-book"></i>Typography </a></li>
-                                <li><a href="/index/admin/forms"><i class="menu-icon icon-paste"></i>腾讯云 </a></li>
+                                <li><a class="collapsed" data-toggle="collapse" href="#Settings">
+									<i class="menu-icon icon-paste"></i>
+									<i class="icon-chevron-down pull-right"></i>
+									<i class="icon-chevron-up pull-right"></i>Settings </a>
+									 <ul id="Settings" class="collapse unstyled">
+                                        <li><a href="/index/admin/Forms"><i class="icon-inbox"></i>基本设置 </a></li>
+                                        <li><a href="/index/admin/Forms_1"><i class="icon-inbox"></i>access key</a></li>
+                                    </ul>
+								</li>
                                 <li><a href="/index/admin/Tables"><i class="menu-icon icon-table"></i>阿里云 </a></li>
                                 <li><a href="/index/admin/charts"><i class="menu-icon icon-bar-chart"></i>统计图表 </a></li>
                             </ul>
                             <!--/.widget-nav-->
                             <ul class="widget widget-menu unstyled">
-                                <li><a class="collapsed" data-toggle="collapse" href="#togglePages"><i class="menu-icon icon-cog">
-                                </i><i class="icon-chevron-down pull-right"></i><i class="icon-chevron-up pull-right">
-                                </i>More Pages </a>
+                                <li><a class="collapsed" data-toggle="collapse" href="#togglePages">
+								<i class="menu-icon icon-cog"></i>
+								<i class="icon-chevron-down pull-right"></i>
+								<i class="icon-chevron-up pull-right"></i>More Pages </a>
                                     <ul id="togglePages" class="collapse unstyled">
                                         <li><a href="/index/admin/profile"><i class="icon-inbox"></i>概况 </a></li>
                                     </ul>

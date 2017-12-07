@@ -103,6 +103,18 @@ class Admin extends Controller
 		$this->assign('web_info',$web_info);
 		return $this->fetch("/admin/form");
 	}
+	public function Forms_1(Request $request)
+	{
+		if (empty(Session::get('member'))){
+			$this->success('请先登陆', '/');
+		}
+		$task_number_head=Db::name('jdprice')->count(0);
+		$this->assign('task_number_head',$task_number_head);
+		$accesskey=Db::name('accesskey')->select();
+		print_r($accesskey);
+		// $this->assign('accesskey',$accesskey);
+		// return $this->fetch("/admin/form-1");
+	}
 	public function Forms_webinfo_up(Request $request)
 	{
 		if (empty(Session::get('member'))){
@@ -112,6 +124,20 @@ class Admin extends Controller
 			$thismonth=date('Y-m-d H:i:s');
 			$webinfo_up_status=Db::name('webinfo')->where('id',13)->update(['domain'=>Request::instance()->post('domain'),'title'=>Request::instance()->post('title'),'tomailser'=>Request::instance()->post('tomailser'),'toport'=>Request::instance()->post('toport'),'toname'=>Request::instance()->post('toname'),'topwd'=>Request::instance()->post('topwd'),'getmailser'=>Request::instance()->post('getmailser'),'getport'=>Request::instance()->post('getport'),'getname'=>Request::instance()->post('getname'),'getpwd'=>Request::instance()->post('getpwd'),'up_time'=>$thismonth]);
 			if ($webinfo_up_status){
+				return "OK";
+			}else
+				return "NO";
+		}
+	}
+	public function Forms_accesskey(Request $request)
+	{
+		if (empty(Session::get('member'))){
+			$this->success('请先登陆', '/');
+		}
+		if ($request->method()=="POST"){
+			$thismonth=date('Y-m-d H:i:s');
+			$accesskey_up_status=Db::name('accesskey')->where('id',13)->update(['domain'=>Request::instance()->post('domain'),'title'=>Request::instance()->post('title'),'tomailser'=>Request::instance()->post('tomailser'),'toport'=>Request::instance()->post('toport'),'toname'=>Request::instance()->post('toname'),'topwd'=>Request::instance()->post('topwd'),'getmailser'=>Request::instance()->post('getmailser'),'getport'=>Request::instance()->post('getport'),'getname'=>Request::instance()->post('getname'),'getpwd'=>Request::instance()->post('getpwd'),'up_time'=>$thismonth]);
+			if ($accesskey_up_status){
 				return "OK";
 			}else
 				return "NO";

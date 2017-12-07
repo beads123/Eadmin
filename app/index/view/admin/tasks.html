@@ -34,7 +34,7 @@
 								<table class="table table-message">
 									<tbody>
 										<tr class="heading">
-											<td class="cell-icon"></td>
+											<td class="cell-icon">id</td>
 											<td class="cell-title">商品名称</td>
 											<td class="cell-title">商品分类</td>
 											<td class="cell-status hidden-phone hidden-tablet">商品编号</td>
@@ -43,23 +43,24 @@
 										</tr>
 										{for start="0" end="$task_number"}
 										<tr>
-											<td class="cell-icon"><i class="icon-checker high"></i></td>
+											<td class="cell-icon"><i>{$tasks[$i]["id"]}</i></td>
 											<td class="cell-title"><div>{$tasks[$i]["product_name"]}</div></td>
 											<td class="cell-title"><div>{$tasks[$i]["product_category"]}</div></td>
 											<td class="cell-status hidden-phone hidden-tablet"><b class="due">{$tasks[$i]["product_number"]}</b></td>
 											<td class="cell-time align-right">{$tasks[$i]["product_time"]}</td>
 											<td>
-												<button type="button" onclick="document.getElementById('jd_modify_{$tasks[$i]['product_number']}').style.display='block';">修改</button>
+												<button type="button" onclick="document.getElementById('jd_modify_{$tasks[$i]['id']}').style.display='block';">修改</button>
 												<button type="button" onclick="jd_delete({$tasks[$i]['product_number']})">删除</button>
 											</td>
-											<div id="jd_modify_{$tasks[$i]['product_number']}" class="tasks_table">
-												<form id="{$tasks[$i]['product_number']}" name="frm" onsubmit="return false" action="##" method="post">
+											<div id="jd_modify_{$tasks[$i]['id']}" class="tasks_table">
+												<form id="id_{$tasks[$i]['id']}" onsubmit="return false" action="##" method="post">
+												<p style='display:none'><input type="text" name="id" value="{$tasks[$i]['id']}" /></p>
 												<p>商品名称:<input type="text" name="name" value="{$tasks[$i]['product_name']}" /></p>
 												<p>商品分类:<input type="text" name="category" value="{$tasks[$i]['product_category']}" /></p>
-												<p>商品编号:<input type="text" name="id" value="{$tasks[$i]['product_number']}" /></p>
+												<p>商品编号:<input type="text" name="number" value="{$tasks[$i]['product_number']}" /></p>
 												<p>
-													<button type="button" onclick="jd_modify({$tasks[$i]['product_number']})">发送</button>
-													<button type="button" onclick="document.getElementById('jd_modify_{$tasks[$i]['product_number']}').style.display='none';">取消</button>
+													<button type="button" onclick="jd_modify({$tasks[$i]['id']})">发送</button>
+													<button type="button" onclick="document.getElementById('jd_modify_{$tasks[$i]['id']}').style.display='none';">取消</button>
 												</p>
 												</form>
 											</div>
@@ -81,7 +82,7 @@
 	</div><!--/.wrapper-->
 	{include file="/admin/footer"}
 	<div id="jd_create" class="tasks">
-		<form id="aliyun" name="frm" onsubmit="return false" action="##" method="post">
+		<form id="create" name="frm" onsubmit="return false" action="##" method="post">
 		<p>商品名称:<input type="text" name="name" /></p>
 		<p>商品分类:<input type="text" name="category" /></p>
 		<p>商品编号:<input type="text" name="id" /></p>
@@ -96,7 +97,7 @@
 				$.ajax({
 				type: "POST",
 				url: "/index/jdapi/jd_create",
-				data: $('#aliyun').serialize(),
+				data: $('#create').serialize(),
 				dataType: 'JSON',
 				timeout: 3000,
 				success: function (result) {
@@ -113,13 +114,14 @@
 				$.ajax({
 				type: "POST",
 				url: "/index/jdapi/jd_modify",
-				data: $('#'+number).serialize(),
+				data: $('#id_'+number).serialize(),
 				dataType: 'JSON',
 				timeout: 3000,
 				success: function (result) {
 					if (result=="OK"){
 						document.getElementById('jd_modify_'+number).style.display='none';
-					}
+					}else
+						alert(result);
 				},
 				error: function(result) {
 					alert(result);

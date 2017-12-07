@@ -1,8 +1,8 @@
--- MySQL dump 10.14  Distrib 5.5.56-MariaDB, for Linux (x86_64)
+-- MySQL dump 10.13  Distrib 5.7.20, for Linux (x86_64)
 --
 -- Host: localhost    Database: think_niexin_me
 -- ------------------------------------------------------
--- Server version	5.5.56-MariaDB
+-- Server version	5.7.20-log
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -16,6 +16,31 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Table structure for table `think_accesskey`
+--
+
+DROP TABLE IF EXISTS `think_accesskey`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `think_accesskey` (
+  `id` int(1) NOT NULL AUTO_INCREMENT COMMENT '保存编号',
+  `alikey` mediumtext COLLATE utf8_unicode_ci NOT NULL COMMENT '阿里云 KEY ID',
+  `aliSecret` mediumtext COLLATE utf8_unicode_ci NOT NULL COMMENT '阿里云 KEY Secret',
+  `SecretId` mediumtext COLLATE utf8_unicode_ci NOT NULL COMMENT '腾讯云 SecretId',
+  `SecretKey` mediumtext COLLATE utf8_unicode_ci NOT NULL COMMENT '腾讯云 SecretKey',
+  `jdkey` mediumtext COLLATE utf8_unicode_ci NOT NULL COMMENT '京东云 KEY ID',
+  `jdSecret` mediumtext COLLATE utf8_unicode_ci NOT NULL COMMENT '京东云 KEY Secret',
+  `wxappid` mediumtext COLLATE utf8_unicode_ci NOT NULL COMMENT '微信 AppID',
+  `wxappsecret` mediumtext COLLATE utf8_unicode_ci NOT NULL COMMENT '微信 AppSecret',
+  `wxappurl` mediumtext COLLATE utf8_unicode_ci NOT NULL COMMENT '微信服务器地址',
+  `wxapptoken` mediumtext COLLATE utf8_unicode_ci NOT NULL COMMENT '微信令牌',
+  `wxappEncodingAESKey` mediumtext COLLATE utf8_unicode_ci NOT NULL COMMENT '微信消息加解密密钥',
+  `up_time` datetime DEFAULT NULL COMMENT '最后更新时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `think_jdprice`
 --
 
@@ -23,13 +48,14 @@ DROP TABLE IF EXISTS `think_jdprice`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `think_jdprice` (
+  `id` int(1) NOT NULL AUTO_INCREMENT COMMENT '会员ID号',
   `product_name` mediumtext COLLATE utf8_unicode_ci NOT NULL COMMENT '产品名称',
   `product_category` mediumtext COLLATE utf8_unicode_ci NOT NULL COMMENT '产品类别',
   `product_Price` int(1) NOT NULL COMMENT '产品价格',
   `product_number` int(1) NOT NULL COMMENT '产品编号',
   `product_time` datetime DEFAULT NULL COMMENT '价格更新时间',
-  PRIMARY KEY (`product_number`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -102,4 +128,4 @@ CREATE TABLE `think_webinfo` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-12-07 13:47:18
+-- Dump completed on 2017-12-07 23:50:59

@@ -135,7 +135,7 @@
                                                 <td class="center">
                                                     {$task_jdprice_value[$i]["product_number"]}
                                                 </td>
-                                                <td class="center">
+                                                <td class="center" id="jd_{$task_jdprice_value[$i]['product_number']}_time">
                                                     {$task_jdprice_value[$i]["product_time"]}
                                                 </td>
 												<td class="center">
@@ -342,7 +342,8 @@
 				dataType: 'JSON',
 				timeout: 3000,
 				success: function (result) {
-					document.getElementById("jd_"+jd_number).innerHTML=result;
+					document.getElementById("jd_"+jd_number).innerHTML=result[0];
+					document.getElementById("jd_"+jd_number+"_time").innerHTML=result[1];
 				},
 				error: function(result) {
 					var jsonData = result;

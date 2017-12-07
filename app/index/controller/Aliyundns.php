@@ -15,8 +15,6 @@ use think\Request;
 
 class Aliyundns extends Controller
 {
-    private $accessKeyId  = "LTAINukySETtCAmY";
-    private $accessSecrec = "OO8YFkhHoYWkNgOC3BBLd6RrtcDWgZ";
     private static $obj  = null;
     public static function Obj ()
     {
@@ -161,10 +159,13 @@ class Aliyundns extends Controller
 
     private function requestAli($requestParams)
     {
+		$accesskey=Db::name('accesskey')->select();
+		$accessKeyId  = $accesskey[0]['alikey'];
+		$accessSecrec = $accesskey[0]['aliSecret'];
         $publicParams = array(
             "Format"        =>  "JSON",
             "Version"       =>  "2015-01-09",
-            "AccessKeyId"   =>  $this->accessKeyId,
+            "AccessKeyId"   =>  $accessKeyId,
             "Timestamp"     =>  date("Y-m-d\TH:i:s\Z"),
             "SignatureMethod"   =>  "HMAC-SHA1",
             "SignatureVersion"  =>  "1.0",
@@ -172,7 +173,7 @@ class Aliyundns extends Controller
         );
 
         $params = array_merge($publicParams, $requestParams);
-        $params['Signature'] =  $this->sign($params, $this->accessSecrec);
+        $params['Signature'] =  $this->sign($params, $accessSecrec);
         $uri = http_build_query($params);
         $url = 'http://alidns.aliyuncs.com/?'.$uri;
         return $this->curl($url);

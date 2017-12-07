@@ -13,20 +13,20 @@
 											<tbody>
 												<tr>
 													<th>
-														<label class="control-label" for="basicinput">绑定域名</label>
+														<label class="control-label" for="domain">绑定域名</label>
 													</th>
 													<td class="controls">
-														<input type="text" name="domain" style="width:200px" id="basicinput" class="span8" value="{$web_info[0]['domain']}">
+														<input type="text" name="domain" style="width:200px" id="domain" class="span8" value="{$web_info[0]['domain']}">
 													</td>
 												</tr>
 											</tbody>
 											<tbody>
 												<tr>
 													<th>
-														<label class="control-label" for="basicinput">站点标题</label>
+														<label class="control-label" for="title">站点标题</label>
 													</th>
 													<td class="controls">
-														<input type="text" name="title" style="width:200px" id="basicinput" class="span8" value="{$web_info[0]['title']}">
+														<input type="text" name="title" style="width:200px" id="title" class="span8" value="{$web_info[0]['title']}">
 													</td>
 												</tr>
 											</tbody>
@@ -38,30 +38,30 @@
 											<tbody>
 												<tr>
 													<th>
-														<label class="control-label" for="basicinput">邮件推送服务器</label>
+														<label class="control-label" for="tomailser">邮件推送服务器</label>
 													</th>
 													<td class="controls">
-														<input type="text" name="tomailser" style="width:200px" id="basicinput" class="span8" value="{$web_info[0]['tomailser']}">
+														<input type="text" name="tomailser" style="width:200px" id="tomailser" class="span8" value="{$web_info[0]['tomailser']}">
 													</td>
 													<td>
-														端口<input type="text" name="toport" style="width:30px" id="basicinput" value="{$web_info[0]['toport']}">
+														端口<input type="text" name="toport" style="width:30px" value="{$web_info[0]['toport']}">
 													</td>
 												</tr>
 											</tbody>
 											<tbody>
 												<tr>
 													<th>
-														<label class="control-label" for="basicinput">登陆名</label>
+														<label class="control-label" for="toname">登陆名</label>
 													</th>
 													<td class="controls">
-														<input type="text" name="toname" style="width:200px" id="basicinput" class="span8" value="{$web_info[0]['toname']}">
+														<input type="text" name="toname" style="width:200px" id="toname" class="span8" value="{$web_info[0]['toname']}">
 													</td>
 												</tr>
 											</tbody>
 											<tbody>
 												<tr>
 													<th>
-														<label class="control-label" for="basicinput">授权密码</label>
+														<label class="control-label" for="passwd_1">授权密码</label>
 													</th>
 													<td class="controls">
 														<input type="password" name="topwd" style="width:200px" id="passwd_1" class="span8" value="{$web_info[0]['topwd']}">
@@ -77,30 +77,30 @@
 											<tbody>
 												<tr>
 													<th>
-														<label class="control-label" for="basicinput">邮箱服务器</label>
+														<label class="control-label" for="getmailser">邮箱服务器</label>
 													</th>
 													<td class="controls">
-														<input type="text" name="getmailser" style="width:200px" id="basicinput" class="span8" value="{$web_info[0]['getmailser']}">
+														<input type="text" name="getmailser" style="width:200px" id="getmailser" class="span8" value="{$web_info[0]['getmailser']}">
 													</td>
 													<td class="controls">
-														端口<input type="text" name="getport" style="width:30px" id="basicinput" value="{$web_info[0]['getport']}">
+														端口<input type="text" name="getport" style="width:30px" value="{$web_info[0]['getport']}">
 													</td>
 												</tr>
 											</tbody>
 											<tbody>
 												<tr>
 													<th>
-														<label class="control-label" for="basicinput">登录名</label>
+														<label class="control-label" for="getname">登录名</label>
 													</th>
 													<td class="controls">
-														<input type="text" name="getname" style="width:200px" id="basicinput" class="span8" value="{$web_info[0]['getname']}">
+														<input type="text" name="getname" style="width:200px" id="getname" class="span8" value="{$web_info[0]['getname']}">
 													</td>
 												</tr>
 											</tbody>
 											<tbody>
 												<tr>
 													<th>
-														<label class="control-label" for="basicinput">授权密码</label>
+														<label class="control-label" for="passwd">授权密码</label>
 													</th>
 													<td class="controls">
 														<input type="password" name="getpwd" style="width:200px" id="passwd" class="span8" value="{$web_info[0]['getpwd']}">
@@ -121,6 +121,7 @@
 			</div>
 		</div><!--/.container-->
 	</div><!--/.wrapper-->
+
 	{include file="/admin/footer"}
 	<script src="{$Request.domain}/scripts/jquery-1.9.1.min.js" type="text/javascript"></script>
 	<script src="{$Request.domain}/scripts/jquery-ui-1.10.1.custom.min.js" type="text/javascript"></script>

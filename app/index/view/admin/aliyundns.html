@@ -1,0 +1,51 @@
+<div border="1px" class="aliyundns_index" id="aliyundns">
+	<table>
+		<form id="aliyun" name="aliyun" onsubmit="return false" action="##" method="post">
+		<tr>
+			<th align="right">域名: </th>
+			<th><input type="text" name="domain" value="niexin.me"></th>
+		</tr>
+		<tr>
+			<th align="right">主机记录: </th>
+			<th><input type="text" name="host"></th>
+		</tr>
+		<tr>
+			<th align="right">类型: </th>
+			<th style="text-align:left">
+				<select type="text" name="type">
+					<option value="A">A</option>
+					<option value="CNAME">CNAME</option>
+					<option value="TXT">TXT</option>
+					<option value="MX">MX</option>
+				</select>
+			</th>
+		</tr>
+		<tr>
+			<th align="right">IP: </th>
+			<th><input type="text" name="ip"></th>
+		</tr>
+		<tr>
+			<th align="right">操作: </th>
+			<th style="text-align:left">    
+				<select type="text" name="status">
+					<option value="Select">查询</option>
+					<option value="Create">添加</option>
+					<option value="Update">修改</option>
+					<option value="Delete">删除</option>
+				</select>
+			</th>
+		</tr>
+		<tr>
+			<th></th>
+			<th>
+				<button type="button" onclick="aliyun_top()">执行</button>
+				<button type="button" onclick="document.getElementById('aliyundns').style.display='none';">取消</button>
+			</th>
+		</tr>
+	</form>
+	</table>
+</div> 
+<div id="aliyun_load" class="aliyundns_load">
+	<table id="con" border="1"></table>
+	<a href="javascript:void(0)" onclick="document.getElementById('aliyun_load').style.display='none';"> 关闭</a></div> 
+</div>

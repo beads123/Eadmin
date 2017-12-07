@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Eadmin</title>
+        <link type="text/css" href="{$Request.domain}/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+        <link type="text/css" href="{$Request.domain}/bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet">
+        <link type="text/css" href="{$Request.domain}/css/theme.css" rel="stylesheet">
+        <link type="text/css" href="{$Request.domain}/images/icons/css/font-awesome.css" rel="stylesheet">
+        <link type="text/css" href='http://fonts.googleapis.com/css?family=Open+Sans:400italic,600italic,400,600' rel='stylesheet'>
+    </head>
+    <body>
+        <div class="navbar navbar-fixed-top">
+            <div class="navbar-inner">
+                <div class="container">
+                    <a class="btn btn-navbar" data-toggle="collapse" data-target=".navbar-inverse-collapse">
+                        <i class="icon-reorder shaded"></i></a><a class="brand" href="/index/admin">Edmin </a>
+                    <div class="nav-collapse collapse navbar-inverse-collapse">
+                        <ul class="nav nav-icons">
+                            <li class="active"><a href="#"><i class="icon-envelope"></i></a></li>
+                            <li><a href="#"><i class="icon-eye-open"></i></a></li>
+                            <li><a href="#"><i class="icon-bar-chart"></i></a></li>
+                        </ul>
+                        <form class="navbar-search pull-left input-append" action="#">
+                        <input type="text" class="span3">
+                        <button class="btn" type="button">
+                            <i class="icon-search"></i>
+                        </button>
+                        </form>
+                        <ul class="nav pull-right">
+							<!--
+                            <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown
+                                <b class="caret"></b></a>
+                                <ul class="dropdown-menu">
+                                    <li class="divider"></li>
+                                    <li class="nav-header">Example Header</li>
+                                    <li><a href="#">A Separated link</a></li>
+                                </ul>
+                            </li>
+                            <li><a href="#">Support </a></li>-->
+                            <li class="nav-user dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <img src="{$Request.domain}/images/user.png" class="nav-avatar" />
+                                <b class="caret"></b></a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="#">应用设置</a></li>
+                                    <li><a href="/index/admin/forms">账户设置</a></li>
+                                    <li class="divider"></li>
+                                    <li><a href="/index/login/destroy">退出</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- /.nav-collapse -->
+                </div>
+            </div>
+            <!-- /navbar-inner -->
+        </div>
+        <!-- /navbar -->
+        <div class="wrapper">
+            <div class="container">
+                <div class="row">
+                    <div class="span3">
+                        <div class="sidebar">
+                            <ul class="widget widget-menu unstyled">
+                                <li class="active"><a href="/index/admin"><i class="menu-icon icon-dashboard"></i>仪表盘 </a></li>
+								<li><a href="/index/admin/NewsFeed"><i class="menu-icon icon-bullhorn"></i>日记 </a></li>
+								<li><a href="/index/admin/Inbox"><i class="menu-icon icon-inbox"></i>收件箱 <b class="label green pull-right">11</b></a></li>
+								<li><a href="/index/admin/tasks"><i class="menu-icon icon-tasks"></i>任务控制器 <b class="label orange pull-right">{$task_number_head}</b></a></li>
+                            </ul>
+                            <!--/.widget-nav-->
+                            
+                            
+                            <ul class="widget widget-menu unstyled">
+                                <li><a href="/index/admin/Buttons"><i class="menu-icon icon-bold"></i> Buttons </a></li>
+                                <li><a href="/index/admin/typography"><i class="menu-icon icon-book"></i>Typography </a></li>
+                                <li><a href="/index/admin/forms"><i class="menu-icon icon-paste"></i>腾讯云 </a></li>
+                                <li><a href="/index/admin/Tables"><i class="menu-icon icon-table"></i>阿里云 </a></li>
+                                <li><a href="/index/admin/charts"><i class="menu-icon icon-bar-chart"></i>统计图表 </a></li>
+                            </ul>
+                            <!--/.widget-nav-->
+                            <ul class="widget widget-menu unstyled">
+                                <li><a class="collapsed" data-toggle="collapse" href="#togglePages"><i class="menu-icon icon-cog">
+                                </i><i class="icon-chevron-down pull-right"></i><i class="icon-chevron-up pull-right">
+                                </i>More Pages </a>
+                                    <ul id="togglePages" class="collapse unstyled">
+                                        <li><a href="/index/admin/profile"><i class="icon-inbox"></i>概况 </a></li>
+                                    </ul>
+                                </li>
+                                <li><a href="/index/login/destroy"><i class="menu-icon icon-signout"></i>退出 </a></li>
+                            </ul>
+                        </div>
+                        <!--/.sidebar-->
+                    </div>

@@ -1,0 +1,162 @@
+﻿{include file="/admin/head"}
+	<!--/.span3-->
+				<div class="span9">
+					<div class="content">
+
+						<div class="module message">
+							<div class="module-head">
+								<h3>任务管理工具</h3>
+							</div>
+							<div class="module-option clearfix">
+								<div class="pull-left">
+									过滤 : &nbsp;
+									<div class="btn-group">
+										<button class="btn">所有</button>
+										<button class="btn dropdown-toggle" data-toggle="dropdown">
+											<span class="caret"></span>
+										</button>
+										<ul class="dropdown-menu">
+											<li><a href="#">所有</a></li>
+											<li><a href="#">执行中</a></li>
+											<li><a href="#">完成</a></li>
+											<li class="divider"></li>
+											<li><a href="#">新的</a></li>
+											<li><a href="#">过期</a></li>
+										</ul>
+									</div>
+								</div>
+								<div class="pull-right">
+									<button type="button" class="btn btn-primary" onclick="document.getElementById('jd_create').style.display='block';">创建新的任务</button>
+								</div>
+							</div>
+							<div class="module-body table">								
+
+								<table class="table table-message">
+									<tbody>
+										<tr class="heading">
+											<td class="cell-icon"></td>
+											<td class="cell-title">商品名称</td>
+											<td class="cell-title">商品分类</td>
+											<td class="cell-status hidden-phone hidden-tablet">商品编号</td>
+											<td class="cell-time align-right">创建时间</td>
+											<td class="cell-time align-right">操作</td>
+										</tr>
+										{for start="0" end="$task_number"}
+										<tr>
+											<td class="cell-icon"><i class="icon-checker high"></i></td>
+											<td class="cell-title"><div>{$tasks[$i]["product_name"]}</div></td>
+											<td class="cell-title"><div>{$tasks[$i]["product_category"]}</div></td>
+											<td class="cell-status hidden-phone hidden-tablet"><b class="due">{$tasks[$i]["product_number"]}</b></td>
+											<td class="cell-time align-right">{$tasks[$i]["product_time"]}</td>
+											<td>
+												<button type="button" onclick="document.getElementById('jd_modify_{$tasks[$i]['product_number']}').style.display='block';">修改</button>
+												<button type="button" onclick="jd_delete({$tasks[$i]['product_number']})">删除</button>
+											</td>
+											<div id="jd_modify_{$tasks[$i]['product_number']}" class="tasks_table">
+												<form id="{$tasks[$i]['product_number']}" name="frm" onsubmit="return false" action="##" method="post">
+												<p>商品名称:<input type="text" name="name" value="{$tasks[$i]['product_name']}" /></p>
+												<p>商品分类:<input type="text" name="category" value="{$tasks[$i]['product_category']}" /></p>
+												<p>商品编号:<input type="text" name="id" value="{$tasks[$i]['product_number']}" /></p>
+												<p>
+													<button type="button" onclick="jd_modify({$tasks[$i]['product_number']})">发送</button>
+													<button type="button" onclick="document.getElementById('jd_modify_{$tasks[$i]['product_number']}').style.display='none';">取消</button>
+												</p>
+												</form>
+											</div>
+										</tr>
+										{/for}
+									</tbody>
+								</table>
+
+
+							</div>
+							<div class="module-foot">
+							</div>
+						</div>
+						
+					</div><!--/.content-->
+				</div><!--/.span9-->
+			</div>
+		</div><!--/.container-->
+	</div><!--/.wrapper-->
+	{include file="/admin/footer"}
+	<div id="jd_create" class="tasks">
+		<form id="aliyun" name="frm" onsubmit="return false" action="##" method="post">
+		<p>商品名称:<input type="text" name="name" /></p>
+		<p>商品分类:<input type="text" name="category" /></p>
+		<p>商品编号:<input type="text" name="id" /></p>
+		<p>
+			<button type="button" onclick="jd_create()">发送</button>
+			<button type="button" onclick="document.getElementById('jd_create').style.display='none';">关闭</button>
+		</p>
+		</form>
+	</div>
+	<script type="text/javascript">
+		function jd_create(){
+				$.ajax({
+				type: "POST",
+				url: "/index/jdapi/jd_create",
+				data: $('#aliyun').serialize(),
+				dataType: 'JSON',
+				timeout: 3000,
+				success: function (result) {
+					if (result=="OK"){
+						location.reload();
+					}
+				},
+				error: function(result) {
+					alert(result);
+				}
+			});
+		}
+		function jd_modify(number){
+				$.ajax({
+				type: "POST",
+				url: "/index/jdapi/jd_modify",
+				data: $('#'+number).serialize(),
+				dataType: 'JSON',
+				timeout: 3000,
+				success: function (result) {
+					if (result=="OK"){
+						document.getElementById('jd_modify_'+number).style.display='none';
+					}
+				},
+				error: function(result) {
+					alert(result);
+				}
+			});
+		}
+		function jd_delete(number){
+				$.ajax({
+				type: "POST",
+				url: "/index/jdapi/jd_delete",
+				data: {'id':number},
+				dataType: 'JSON',
+				timeout: 3000,
+				success: function (result) {
+					if (result=="OK"){
+						location.reload();
+					}
+				},
+				error: function(result) {
+					alert(result);
+				}
+			});
+		}
+	</script>
+	<script src="{$Request.domain}/scripts/jquery-1.9.1.min.js" type="text/javascript"></script>
+	<script src="{$Request.domain}/scripts/jquery-ui-1.10.1.custom.min.js" type="text/javascript"></script>
+	<script src="{$Request.domain}/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+	<script src="{$Request.domain}/scripts/flot/jquery.flot.js" type="text/javascript"></script>
+	<script src="{$Request.domain}/scripts/datatables/jquery.dataTables.js" type="text/javascript"></script>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$('.table-message tbody tr').click(
+				function() 
+				{
+					$(this).toggleClass('resolved');
+				}
+			);
+		} );
+	</script>
+</body>

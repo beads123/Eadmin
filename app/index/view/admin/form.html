@@ -1,0 +1,161 @@
+﻿{include file="/admin/head"}
+				<!--/.span3-->
+				<div class="span9">
+					<div class="content">
+
+						<div class="module">
+							<div class="module-head">
+								<h3>设置</h3>
+							</div>
+							<div class="module-body">
+									<form id="web_info" class="form-horizontal row-fluid">
+										<table cellpadding="10">
+											<tbody>
+												<tr>
+													<th>
+														<label class="control-label" for="basicinput">绑定域名</label>
+													</th>
+													<td class="controls">
+														<input type="text" name="domain" style="width:200px" id="basicinput" class="span8" value="{$web_info[0]['domain']}">
+													</td>
+												</tr>
+											</tbody>
+											<tbody>
+												<tr>
+													<th>
+														<label class="control-label" for="basicinput">站点标题</label>
+													</th>
+													<td class="controls">
+														<input type="text" name="title" style="width:200px" id="basicinput" class="span8" value="{$web_info[0]['title']}">
+													</td>
+												</tr>
+											</tbody>
+											<tbody>
+												<tr>
+												<th>邮件推送</th>
+												</tr>
+											</tbody>
+											<tbody>
+												<tr>
+													<th>
+														<label class="control-label" for="basicinput">邮件推送服务器</label>
+													</th>
+													<td class="controls">
+														<input type="text" name="tomailser" style="width:200px" id="basicinput" class="span8" value="{$web_info[0]['tomailser']}">
+													</td>
+													<td>
+														端口<input type="text" name="toport" style="width:30px" id="basicinput" value="{$web_info[0]['toport']}">
+													</td>
+												</tr>
+											</tbody>
+											<tbody>
+												<tr>
+													<th>
+														<label class="control-label" for="basicinput">登陆名</label>
+													</th>
+													<td class="controls">
+														<input type="text" name="toname" style="width:200px" id="basicinput" class="span8" value="{$web_info[0]['toname']}">
+													</td>
+												</tr>
+											</tbody>
+											<tbody>
+												<tr>
+													<th>
+														<label class="control-label" for="basicinput">授权密码</label>
+													</th>
+													<td class="controls">
+														<input type="password" name="topwd" style="width:200px" id="passwd_1" class="span8" value="{$web_info[0]['topwd']}">
+														<button id="pwd_but_1" type="button" onclick="pwd('passwd_1','pwd_but_1')">明文</button>
+													</td>
+												</tr>
+											</tbody>
+											<tbody>
+												<tr>
+												<th>邮件接收</th>
+												</tr>
+											</tbody>
+											<tbody>
+												<tr>
+													<th>
+														<label class="control-label" for="basicinput">邮箱服务器</label>
+													</th>
+													<td class="controls">
+														<input type="text" name="getmailser" style="width:200px" id="basicinput" class="span8" value="{$web_info[0]['getmailser']}">
+													</td>
+													<td class="controls">
+														端口<input type="text" name="getport" style="width:30px" id="basicinput" value="{$web_info[0]['getport']}">
+													</td>
+												</tr>
+											</tbody>
+											<tbody>
+												<tr>
+													<th>
+														<label class="control-label" for="basicinput">登录名</label>
+													</th>
+													<td class="controls">
+														<input type="text" name="getname" style="width:200px" id="basicinput" class="span8" value="{$web_info[0]['getname']}">
+													</td>
+												</tr>
+											</tbody>
+											<tbody>
+												<tr>
+													<th>
+														<label class="control-label" for="basicinput">授权密码</label>
+													</th>
+													<td class="controls">
+														<input type="password" name="getpwd" style="width:200px" id="passwd" class="span8" value="{$web_info[0]['getpwd']}">
+														<button id="pwd_but" type="button" onclick="pwd('passwd','pwd_but')">明文</button>
+													</td>
+												</tr>
+											</tbody>
+										</table>
+										<button type="button" class="btn-primary" onclick="web_info_up()">保存修改</button>
+									</form>
+							</div>
+						</div>
+
+						
+						
+					</div><!--/.content-->
+				</div><!--/.span9-->
+			</div>
+		</div><!--/.container-->
+	</div><!--/.wrapper-->
+	{include file="/admin/footer"}
+	<script src="{$Request.domain}/scripts/jquery-1.9.1.min.js" type="text/javascript"></script>
+	<script src="{$Request.domain}/scripts/jquery-ui-1.10.1.custom.min.js" type="text/javascript"></script>
+	<script src="{$Request.domain}/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+	<script src="{$Request.domain}/scripts/flot/jquery.flot.js" type="text/javascript"></script>
+	<script type="text/javascript">
+		<!--密码显示切换-->
+		function pwd(passwd_js,pwd_but_js){
+			var passwd=document.getElementById(passwd_js);
+			var pwd_but=document.getElementById(pwd_but_js);
+			if (passwd.type=='password'){
+				passwd.type = 'text';
+				pwd_but.innerHTML="密文";
+			}else{
+				passwd.type = 'password';
+				pwd_but.innerHTML="明文";
+			}
+		}
+		function web_info_up(){
+				$.ajax({
+				type: "POST",
+				url: "/index/admin/forms_webinfo_up",
+				data: $('#web_info').serialize(),
+				dataType: 'JSON',
+				timeout: 3000,
+				success: function (result) {
+					location.reload();
+					<!-- alert(result); -->
+				},
+				error: function(result) {
+					var jsonData = result;
+					alert(jsonData.responseText);
+					<!-- alert(result); -->
+				}
+				});
+			}
+	</script>
+</body>

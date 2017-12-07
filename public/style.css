@@ -1,0 +1,25 @@
+<!--
+body,td,th {font-family: ו;font-size: 9pt;color: #222;}
+body {height:100%;width:100%;background-color: #FFFFFF;line-height:20px;}
+.local{
+	background-image:url(/image/backgound.jpg);
+}
+.i{
+	width:363px;
+	height:710px;
+	position:absolute;  
+	left:50%;  
+	top:50%;  
+	margin:-100px 0 0 -150px;
+}
+.div{
+	position:absolute;  
+	left:50%;  
+	top:50%;  
+	margin:-100px 0 0 -150px;
+}
+a:link {color: #222;text-decoration: none;}
+a:visited {text-decoration: none;color: #222;}
+a:hover {text-decoration: underline;color: #FF0000;}
+a:active {text-decoration: none;color: #999999;}
+-->

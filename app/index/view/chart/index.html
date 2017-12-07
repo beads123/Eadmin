@@ -1,0 +1,15 @@
+<table>
+
+    <tr><th colspan="5">网络使用状况</th></tr>
+{for start="0" end="$down" }
+
+     <tr>
+        <td width="13%">{$arr[$i][1][0]} : </td>
+        <td width="29%">入网: <font color='#CC0000'><span id="NetInput"></span></font></td>
+		<td width="14%">实时: <font color='#CC0000'><span id="NetInputSpeed">0B/s</span></font></td>
+        <td width="29%">出网: <font color='#CC0000'><span id="NetOut"></span></font></td>
+		<td width="14%">实时: <font color='#CC0000'><span id="NetOutSpeed">0B/s</span></font></td>
+    </tr>
+	
+{/for}
+</table>

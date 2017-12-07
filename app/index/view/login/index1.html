@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>会员主页面</title>
+<link href="/style.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+<div class="div">
+<table width="350" border="0" align="center" cellpadding="5" cellspacing="1" bgcolor="#B3B3B3">
+  <tr>
+    <td width="327" align="center" bgcolor="#EBEBEB" class="font"><a href='/index/login/destroy'>注销本次登录</a>
+    <a href="/index/admin">管理</a></td>
+  </tr>
+</table>
+
+<table width="350" border="0" align="center" cellpadding="5" cellspacing="1" bgcolor="#B3B3B3">
+  <tr>
+    <td height="28" align="right" bgcolor="#FFFFFF">账号:</td>
+    <td bgcolor="#FFFFFF">{$result.member_user}</td>
+  </tr>
+  <tr>
+    <td height="28" align="right" bgcolor="#FFFFFF">姓名:</td>
+    <td bgcolor="#FFFFFF">{$result.member_name}</td>
+  </tr>
+  <tr>
+    <td height="28" align="right" bgcolor="#FFFFFF">性别:</td>
+    <td bgcolor="#FFFFFF">{$result.member_sex}</td>
+  </tr>
+  <tr>
+    <td height="28" align="right" bgcolor="#FFFFFF">qq号码:</td>
+    <td bgcolor="#FFFFFF">{$result.member_qq}</td>
+  </tr>
+  <tr>
+    <td height="28" align="right" bgcolor="#FFFFFF">手机号码:</td>
+    <td bgcolor="#FFFFFF">{$result.member_phone}</td>
+  </tr>
+  <tr>
+    <td height="28" align="right" bgcolor="#FFFFFF">电子邮箱:</td>
+    <td bgcolor="#FFFFFF">{$result.member_email}</td>
+  </tr>
+</table>
+</div>
+</body>
+</html>

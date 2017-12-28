@@ -1,0 +1,364 @@
+<script src="{$Request.domain}/scripts/jquery-1.9.1.min.js" type="text/javascript"></script>
+	<script type="text/javascript">
+	function aliyun_top(){
+		if (document.aliyun.company.value=="aliyun"){
+			switch(document.aliyun.Action.value){
+				case "Select":
+					if (document.aliyun.domain.value!=""){
+						aliyun_To(document.aliyun.Action.value);
+					}else 
+						alert("查询必须输入域名");
+					break;
+				case "Create":
+					if (document.aliyun.domain.value!="" && document.aliyun.host.value!="" && document.aliyun.ip.value!=""){
+						aliyun_To(document.aliyun.Action.value);
+					}else 
+						alert("添加解析记录必须输入域名/主机记录/IP");
+					break;
+				case "Update":
+					if (document.aliyun.domain.value!="" && document.aliyun.host.value!="" && document.aliyun.ip.value!=""){
+						aliyun_To(document.aliyun.Action.value);
+					}else 
+						alert("修改解析记录必须输入域名/主机记录/IP");
+					break;
+				case "Delete":
+					if (document.aliyun.domain.value!="" && document.aliyun.host.value!=""){
+						aliyun_To(document.aliyun.Action.value);
+					}else 
+						alert("删除解析记录必须输入域名/主机记录");
+					break;
+				default:
+			}
+		}else if (document.aliyun.company.value=="qcloud"){
+			switch(document.aliyun.Action.value){
+				case "Select":
+					if (document.aliyun.domain.value!=""){
+						qcloud_To(document.aliyun.Action.value);
+					}else 
+						alert("查询必须输入域名");
+					break;
+				case "Create":
+					if (document.aliyun.domain.value!="" && document.aliyun.host.value!="" && document.aliyun.ip.value!=""){
+						qcloud_To(document.aliyun.Action.value);
+					}else 
+						alert("添加解析记录必须输入域名/主机记录/IP");
+					break;
+				case "Update":
+					if (document.aliyun.domain.value!="" && document.aliyun.host.value!="" && document.aliyun.ip.value!="" && document.aliyun.newip.value!=""){
+						qcloud_To(document.aliyun.Action.value);
+					}else 
+						alert("修改解析记录必须输入域名/主机记录/旧IP/新IP");
+					break;
+				case "Delete":
+					if (document.aliyun.domain.value!="" && document.aliyun.host.value!=""){
+						qcloud_To(document.aliyun.Action.value);
+					}else 
+						alert("删除解析记录必须输入域名/主机记录");
+					break;
+				default:
+			}
+		}else if (document.aliyun.company.value=="jcloud"){
+		
+		}else if (document.aliyun.company.value=="bcloud"){
+		
+		}else 
+			alert("ERROR");
+	}
+	function aliyun_To(Action){
+		$.ajax({
+		type: "POST",
+		url: "/index/aliyundns",
+		data: $('#aliyun').serialize(),
+		dataType: 'JSON',
+		timeout: 3000,
+		success: function (result) {
+			var jsonData = result; //返回的result为json格式的数据
+			if (result.responseText == "Error"){
+				alert(result.responseText);
+			}
+			<!-- var jsonData = eval("("+result.responseText+")"); -->
+			<!-- var s = document.aliyun.Action.value; -->
+			switch(Action){
+				case "Select":
+					con = "";
+					con += "<tr><th>"+jsonData.PageNumber+"</th>";
+					con += "<th>记录总数:"+jsonData.TotalCount+"</th>";
+					con += "<th>解析数量:"+jsonData.PageSize+"</th>";
+					<!-- con += "<th>识别码:"+jsonData.RequestId+"</th></tr>"; -->
+					con += "<tr><th>主机记录</th><th>类型</th><th>记录值</th><th>线路</th><th>MX优先级</th><th>生存时间</th><th>状态</th><th>锁定状态</th></tr>";
+					for (var i=0;i<jsonData.TotalCount;i++)
+					{
+						con += "<tr><td>"+jsonData.DomainRecords.Record[i].RR+"</td>";
+						con += "<td>"+jsonData.DomainRecords.Record[i].Type+"</td>";
+						con += "<td>"+jsonData.DomainRecords.Record[i].Value+"</td>";
+						con += "<td>"+jsonData.DomainRecords.Record[i].Line+"</td>";
+						var Priority = jsonData.DomainRecords.Record[i].Priority;
+						if (typeof(Priority) == "undefined"){
+							Priority = "--";
+						}
+						con += "<td>"+Priority + "</td>";
+						con += "<td>"+jsonData.DomainRecords.Record[i].TTL+"</td>";
+						con += "<td>"+jsonData.DomainRecords.Record[i].Status+"</td>";
+						con += "<td>"+jsonData.DomainRecords.Record[i].Locked+"</td></tr>";
+					}
+					$("#con").html(con); //把内容入到这个div中即完成
+					document.getElementById('aliyun_load').style.display='block';
+					break;
+				case "Create":
+				  con = "";
+					con += "<li>唯一请求识别码:"+jsonData.RequestId+"</li>";
+					con += "<li>解析记录的ID:"+jsonData.RecordId+"</li>";
+					$("#con").html(con); //把内容入到这个div中即完成
+					document.getElementById('aliyun_load').style.display='block';
+				  break;
+				 case "Update":
+				  con = "";
+					con += "<li>唯一请求识别码:"+jsonData.RequestId+"</li>";
+					con += "<li>解析记录的ID:"+jsonData.RecordId+"</li>";
+					$("#con").html(con); //把内容入到这个div中即完成
+					document.getElementById('aliyun_load').style.display='block';
+				  break;
+				 case "Delete":
+					con = "";
+					con += "<li>唯一请求识别码:"+jsonData.RequestId+"</li>";
+					con += "<li>主机记录:"+jsonData.RR+"</li>";
+					con += "<li>被删除的解析记录总数:"+jsonData.TotalCount+"</li>";
+					$("#con").html(con); //把内容入到这个div中即完成
+					document.getElementById('aliyun_load').style.display='block';
+				  break;
+				default:
+					con = "ERROR!";
+					$("#con").html(con); //把内容入到这个div中即完成
+					document.getElementById('aliyun_load').style.display='block';
+			}
+		},
+		error: function(result) {
+			var jsonData = result;
+			alert(jsonData.responseText);
+		}
+	});
+	}
+	function qcloud_To(Action){
+		$.ajax({
+		type: "POST",
+		url: "/index/aliyundns",
+		data: $('#aliyun').serialize(),
+		dataType: 'JSON',
+		timeout: 3000,
+		success: function (result) {
+			var jsonData = result; //返回的result为json格式的数据
+			switch(Action){
+				case "Select":
+					if (jsonData.code==0){
+						con = "";
+						<!-- con += "<tr><th>"+jsonData.PageNumber+"</th>"; -->
+						con += "<tr><th>记录总数:"+jsonData.data.info.record_total+"</th>";
+						con += "<th>解析数量:"+jsonData.data.info.sub_domains+"</th>";
+						<!-- con += "<th>识别码:"+jsonData.RequestId+"</th></tr>"; -->
+						con += "<tr><th>主机记录</th><th>类型</th><th>记录值</th><th>线路</th><th>MX优先级</th><th>生存时间</th><th>状态</th><th>锁定状态</th></tr>";
+						for (var i=0;i<jsonData.data.info.record_total;i++)
+						{
+							con += "<tr><td>"+jsonData.data.records[i].name+"</td>";
+							con += "<td>"+jsonData.data.records[i].type+"</td>";
+							con += "<td>"+jsonData.data.records[i].value+"</td>";
+							con += "<td>"+jsonData.data.records[i].line+"</td>";
+							var Priority = jsonData.data.records[i].mx;
+							if (typeof(Priority) == "undefined"){
+								Priority = "--";
+							}
+							con += "<td>"+Priority + "</td>";
+							con += "<td>"+jsonData.data.records[i].ttl+"</td>";
+							con += "<td>"+jsonData.data.records[i].status+"</td>";
+							con += "<td>"+jsonData.data.records[i].enabled+"</td></tr>";
+						}
+						$("#con").html(con); //把内容入到这个div中即完成
+						document.getElementById('aliyun_load').style.display='block';
+					}else
+						alert(jsonData.message);
+					break;
+				case "Create":
+					if (jsonData.code==0){
+						con = "";
+						con += "<li>解析记录的ID:"+jsonData.data.record.id+"</li>";
+						con += "<li>主机记录:"+jsonData.data.record.name+"</li>";
+						con += "<li>状态:"+jsonData.data.record.status+"</li>";
+						$("#con").html(con); //把内容入到这个div中即完成
+						document.getElementById('aliyun_load').style.display='block';
+					}else
+						alert(jsonData.message);
+				  break;
+				 case "Update":
+					 if (jsonData.code==0){
+						con = "";
+						con += "<li>解析记录的ID:"+jsonData.data.record.id+"</li>";
+						con += "<li>主机记录:"+jsonData.data.record.name+"</li>";
+						con += "<li>Value:"+jsonData.data.record.value+"</li>";
+						con += "<li>状态:"+jsonData.data.record.status+"</li>";
+						$("#con").html(con); //把内容入到这个div中即完成
+						document.getElementById('aliyun_load').style.display='block';
+					}else
+						alert(jsonData.message);
+				  break;
+				 case "Delete":
+					 if (jsonData.code==0){
+						con = "";
+						con += "<li>结果:"+jsonData.codeDesc+"</li>";
+						$("#con").html(con); //把内容入到这个div中即完成
+						document.getElementById('aliyun_load').style.display='block';
+					}else
+						alert(jsonData.message);
+				  break;
+				default:
+					con = "ERROR!";
+					$("#con").html(con); //把内容入到这个div中即完成
+					document.getElementById('aliyun_load').style.display='block';
+			}
+		},
+		error: function(result) {
+			var jsonData = result;
+			alert("123"); 
+			<!-- alert(jsonData.data.responseText); -->
+		}
+	});
+	}
+	function DomainList(company){
+			if(company=='qcloud'){
+				document.getElementById('qcloud_newip').style.display='table-row';
+				document.getElementById('aliyundns').style.height='330px';
+			}else {
+				document.getElementById('qcloud_newip').style.display='none';
+				document.getElementById('aliyundns').style.height='280px';
+			}
+			$.ajax({
+			type: "GET",
+			url: "/index/aliyundns",
+			data: {"Action":"DomainList","company":company},
+			dataType: 'JSON',
+			timeout: 3000,
+			success: function (result) {
+				var jsonData = result; //返回的result为json格式的数据
+				var con="";
+				for (i=1;i<(jsonData[0]+1);i++){
+					con += '<option value="'+ jsonData[i] +'">'+ jsonData[i] +'</option>';
+				}
+				if(company=='qcloud'){
+					
+				}
+				$("#IndexDomainList").html(con);
+			},
+			error: function(result) {
+				alert("域名列表获取失败");
+			}
+		});
+	}
+	</script>
+	<script type="text/javascript">
+		function sendmail(){
+			$.ajax({
+			type: "POST",
+			url: "/index/Phpmail/tomail",
+			data: $('#mail').serialize(),
+			dataType: 'JSON',
+			timeout: 3000,
+			success: function (result) {
+				<!-- var jsonData = result; //返回的result为json格式的数据 -->
+				<!-- alert(jsonData.responseText); -->
+				alert(result);
+			},
+			error: function(result) {
+				var jsonData = result;
+				alert(jsonData.responseText);
+			}
+		});
+	}
+	</script>
+	<script type="text/javascript">
+		function update_jd(jd_number){
+			$.ajax({
+			type: "POST",
+			url: "/index/jdapi/jd_update",
+			data: {"id":jd_number},
+			dataType: 'JSON',
+			timeout: 3000,
+			success: function (result) {
+				document.getElementById("jd_"+jd_number).innerHTML=result[0];
+				document.getElementById("jd_"+jd_number+"_time").innerHTML=result[1];
+			},
+			error: function(result) {
+				var jsonData = result;
+				alert(jsonData.responseText);
+			}
+			});
+		}
+	</script>
+	<script type="text/javascript">
+	$(document).ready(function(){
+		network();
+		<!-- DomainList(); -->
+		setInterval("network()",1000);
+	});
+	var OutSpeed0="";
+	var OutSpeed1="";
+	var OutSpeed2="";
+	var InputSpeed0="";
+	var InputSpeed1="";
+	var InputSpeed2="";
+	var cpu_idle=0;
+	var cpu_Total=0;
+	var cpu="";
+	function network(){
+		$.ajax({
+		type: "GET",
+		url: "/index/admin/server",
+		dataType: 'JSON',
+		complete: function (result) {
+			var jsonData = eval("("+result.responseText+")");
+			if (cpu_idle != 0 && cpu_Total != 0){
+				cpu=((1-(jsonData.cpu[0].cpu_idle-cpu_idle)/(jsonData.cpu[0].Total-cpu_Total))*100).toFixed(2)+"%";
+				$("#cpu_html").html(cpu); 
+				cpu_Total=jsonData.cpu[0].Total; 
+				cpu_idle=jsonData.cpu[0].cpu_idle;
+			}else {
+				cpu_Total=jsonData.cpu[0].Total; 
+				cpu_idle=jsonData.cpu[0].cpu_idle;
+			}
+			document.getElementById("disk_html").innerHTML=jsonData.disk; 
+			document.getElementById("cpu_style").style.width=cpu; 
+			document.getElementById("mem_html").innerHTML=jsonData.mem[0].Mempa+"%"; 
+			document.getElementById("mem_style").style.width=jsonData.mem[0].Mempa+"%";
+			document.getElementById("disk_style").style.width=jsonData.disk+"%";
+			document.getElementById("mem_html_one").innerHTML="Memory "+jsonData.mem[0].MemFree + "/" + jsonData.mem[0].MemTotal + "M"; //把内容入到这个div中即完成
+			$("#NetInput0").html(jsonData.net[0][2][0]);
+			$("#NetOut0").html(jsonData.net[0][3][0]);
+			$("#NetInput1").html(jsonData.net[0][2][1]);
+			$("#NetOut1").html(jsonData.net[0][3][1]);
+			$("#NetInput2").html(jsonData.net[0][2][2]);
+			$("#NetOut2").html(jsonData.net[0][3][2]);
+			data_(jsonData);
+		}
+		});
+	}
+	function data_ (dataJSON){
+		$("#NetOutSpeed0").html(ForDight((dataJSON.net[0][0][0]-OutSpeed0),3));	OutSpeed0=dataJSON.net[0][0][0];
+		$("#NetOutSpeed1").html(ForDight((dataJSON.net[0][0][1]-OutSpeed1),3));	OutSpeed1=dataJSON.net[0][0][1];
+		$("#NetOutSpeed2").html(ForDight((dataJSON.net[0][0][2]-OutSpeed2),3));	OutSpeed2=dataJSON.net[0][0][2];
+		$("#NetInputSpeed0").html(ForDight((dataJSON.net[0][1][0]-InputSpeed0),3));	InputSpeed0=dataJSON.net[0][1][0];
+		$("#NetInputSpeed1").html(ForDight((dataJSON.net[0][1][1]-InputSpeed1),3));	InputSpeed1=dataJSON.net[0][1][1];
+		$("#NetInputSpeed2").html(ForDight((dataJSON.net[0][1][2]-InputSpeed2),3));	InputSpeed2=dataJSON.net[0][1][2];
+	}
+	function ForDight(Dight,How)
+	{ 
+	  if (Dight<0){
+		var Last=0+"B/s";
+	  }else if (Dight<1024){
+		var Last=Math.round(Dight*Math.pow(10,How))/Math.pow(10,How)+"B/s";
+	  }else if (Dight<1048576){
+		Dight=Dight/1024;
+		var Last=Math.round(Dight*Math.pow(10,How))/Math.pow(10,How)+"K/s";
+	  }else{
+		Dight=Dight/1048576;
+		var Last=Math.round(Dight*Math.pow(10,How))/Math.pow(10,How)+"M/s";
+	  }
+		return Last; 
+	}
+	</script>

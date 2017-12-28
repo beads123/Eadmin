@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 5.7.20, for Linux (x86_64)
+-- MySQL dump 10.14  Distrib 5.5.56-MariaDB, for Linux (x86_64)
 --
 -- Host: localhost    Database: think_niexin_me
 -- ------------------------------------------------------
--- Server version	5.7.20-log
+-- Server version	5.5.56-MariaDB
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -56,6 +56,23 @@ CREATE TABLE `think_jdprice` (
   `product_time` datetime DEFAULT NULL COMMENT '价格更新时间',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `think_mail`
+--
+
+DROP TABLE IF EXISTS `think_mail`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `think_mail` (
+  `id` int(1) NOT NULL AUTO_INCREMENT COMMENT '保存编号',
+  `Sender` mediumtext COLLATE utf8_unicode_ci NOT NULL COMMENT '发件人',
+  `Subject` mediumtext COLLATE utf8_unicode_ci NOT NULL COMMENT '主题',
+  `content` mediumtext COLLATE utf8_unicode_ci NOT NULL COMMENT '内容',
+  `up_time` datetime DEFAULT NULL COMMENT '接收时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -118,6 +135,28 @@ CREATE TABLE `think_webinfo` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `think_weixinuser`
+--
+
+DROP TABLE IF EXISTS `think_weixinuser`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `think_weixinuser` (
+  `id` int(1) NOT NULL AUTO_INCREMENT COMMENT '会员ID号',
+  `weixin_user` mediumtext COLLATE utf8_unicode_ci NOT NULL COMMENT '昵称',
+  `weixin_password` mediumtext COLLATE utf8_unicode_ci NOT NULL COMMENT '注册密码',
+  `weixin_name` mediumtext COLLATE utf8_unicode_ci NOT NULL COMMENT '真实姓名',
+  `weixin_sex` mediumtext COLLATE utf8_unicode_ci NOT NULL COMMENT '性别',
+  `weixin_qq` int(1) NOT NULL COMMENT 'QQ号',
+  `weixin_phone` int(1) NOT NULL COMMENT '手机号',
+  `weixin_email` mediumtext COLLATE utf8_unicode_ci NOT NULL COMMENT 'email',
+  `weixin_openid` varchar(32) COLLATE utf8_unicode_ci NOT NULL COMMENT 'openid',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `weixin_account` (`weixin_openid`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -128,4 +167,4 @@ CREATE TABLE `think_webinfo` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-12-07 23:50:59
+-- Dump completed on 2017-12-28 22:34:41

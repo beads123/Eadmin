@@ -6,7 +6,6 @@ use think\Request;
 use	think\Session;
 use	think\Loader;
 use first\second\Smtp;
-use first\second\receiveMail;
 
 class Admin extends Controller
 {
@@ -27,11 +26,12 @@ class Admin extends Controller
 			$this->assign('down',$down);
 			$task_number_head=Db::name('jdprice')->count(0);
 			$task_jdprice_number=Db::name('jdprice')->count(0);
+			$weixinuser=Db::name('weixinuser')->count(0);
 			$task_jdprice_value=Db::name('jdprice')->select();
 			$this->assign('task_number_head',$task_number_head);
 			$this->assign('task_jdprice_number',$task_jdprice_number);
 			$this->assign('task_jdprice_value',$task_jdprice_value);
-			// print_r($task_jdprice_value);
+			$this->assign('weixinuser',$weixinuser);
 			return $this->fetch();
 		}
     }
@@ -111,9 +111,9 @@ class Admin extends Controller
 		$task_number_head=Db::name('jdprice')->count(0);
 		$this->assign('task_number_head',$task_number_head);
 		$accesskey=Db::name('accesskey')->select();
-		print_r($accesskey);
-		// $this->assign('accesskey',$accesskey);
-		// return $this->fetch("/admin/form-1");
+		// print_r($accesskey);
+		$this->assign('accesskey',$accesskey);
+		return $this->fetch("/admin/form-1");
 	}
 	public function Forms_webinfo_up(Request $request)
 	{
@@ -129,7 +129,7 @@ class Admin extends Controller
 				return "NO";
 		}
 	}
-	public function Forms_accesskey(Request $request)
+	private function Forms_accesskey(Request $request)
 	{
 		if (empty(Session::get('member'))){
 			$this->success('请先登陆', '/');
@@ -161,68 +161,8 @@ class Admin extends Controller
 		$this->assign('task_number_head',$task_number_head);
 		return $this->fetch("/admin/charts");
 	}
-	public function Getmail(Request $request)
-	{
-		/******************** 提取账户 ******************************/
-		$tomailinfo=Db::name('webinfo')->select();
-		/******************** 提取账户 ******************************/
-		$obj = new receiveMail($tomailinfo[0]["getmailser"],$tomailinfo[0]["getport"],3,$tomailinfo[0]["getname"],$tomailinfo[0]["getpwd"],0);  
-		print_r($obj);
-		// 连接到邮件服务器  
-		print_r($obj->connect($tomailinfo[0]["getmailser"],$tomailinfo[0]["getport"]));         //If connection fails give error message and exit  
-		print_r($obj->login($tomailinfo[0]["getname"],$tomailinfo[0]["getpwd"]));         //If connection fails give error message and exit  
-		// 读取全部信件  
-		// $tot = $obj->getTotalMails(); //Total Mails in Inbox Return integer value  
-		  
-		// echo "收到$tot封邮件::<br>";  
-		// for($i = $tot; $i > 0; $i--)  
-		// {  
-			// $head = $obj->getHeaders($i);  // 读取获取邮件头信息，返回数组 **数组键值为 (subject,to,toOth,toNameOth,from,fromName)  
-			// echo "主题 :: ".$head['subject']."<br>";  
-			// echo "收件人 :: ".$head['to']."<br>";  
-			// echo "抄送 :: ".$head['toOth']."<br>";  
-			// echo "发件人 :: ".$head['from']."<br>";  
-			// echo "发件人名称 :: ".$head['fromName']."<br>";  
-			// echo "<br><br>";  
-			// echo "<br>*******************************************************************************************<br>";  
-			// echo $obj->getBody($i);  // 邮件正文  
-			// $str = $obj->GetAttach($i,"./"); // 获取邮件附件，返回的文件名以逗号隔开。 例如. (mailid, Path to store file)  
-			// $ar = explode(",",$str);  
-			// foreach($ar as $key=>$value)  
-				// echo ($value == "") ? "" : "Atteched File :: " . $value . "<br>";  
-			// echo "<br>------------------------------------------------------------------------------------------<br>";  
-			//$obj->deleteMails($i); // Delete Mail from Mail box  
-		// }  
-		// $obj->close_mailbox();   //Close Mail Box  
-	}
-	public function tomail(Request $request){
-		if ($request->method()=="POST"){
-			/******************** 提取账户 ******************************/
-			$tomailinfo=Db::name('webinfo')->select();
-			/******************** 配置信息 ******************************/
-			$smtpserver = "ssl://smtpdm.aliyun.com";//SMTP服务器
-			$smtpserverport =$tomailinfo[0]["toport"];//SMTP服务器端口
-			$smtpusermail = $tomailinfo[0]["toname"];//SMTP服务器的用户邮箱
-			$smtpemailto = Request::instance()->post('toemail');//发送给谁
-			$smtpuser = $tomailinfo[0]["toname"];//SMTP服务器的用户帐号，注：部分邮箱只需@前面的用户名
-			$smtppass = $tomailinfo[0]["topwd"];;//SMTP服务器的用户密码
-			$mailtitle = Request::instance()->post('title');//邮件主题
-			$mailcontent = "<h1>".Request::instance()->post('content')."</h1>";//邮件内容
-			$mailtype = "HTML";//邮件格式（HTML/TXT）,TXT为文本邮件
-			//******************* 正式发送 ******************************/
-			$smtp = new Smtp($smtpserver,$smtpserverport,true,$smtpuser,$smtppass);//这里面的一个true是表示使用身份验证,否则不使用身份验证.
-			$smtp->debug = false;//是否显示发送的调试信息
-			$state = $smtp->sendmail($smtpemailto, $smtpusermail, $mailtitle, $mailcontent, $mailtype);
-			//******************* 返回结果 ******************************/
-			if($state==""){
-				return "对不起，邮件发送失败！请检查邮箱填写是否有误。";
-			}
-			return  "恭喜！邮件发送成功！！";
-		}else 
-			return "必须使用POST方法提交,当前请求为".$request->method()."方法";
-	}
 	//流量单位换算 1
-	public function hbw($size) {
+	private function hbw($size) {
 		// $size *= 8;
 		if($size > 1024 * 1024 * 1024) {
 				$size = round($size / 1073741824 * 100) / 100 ."GB";
@@ -235,14 +175,14 @@ class Admin extends Controller
 		return $size;
 	}
 	//流量单位换算 2
-	function getSymbolByQuantity($bytes) {
+	private function getSymbolByQuantity($bytes) {
 		$symbols = array('B', 'KiB', 'MiB', 'GiB', 'TiB', 'PiB', 'EiB', 'ZiB', 'YiB');
 		$exp = floor(log($bytes)/log(1024));
 
 		return sprintf('%.2f '.$symbols[$exp], ($bytes/pow(1024, floor($exp))));
 	}
 	//获取CPU使用率
-	public function CpuTime(){
+	private function CpuTime(){
 		$file_path = "/proc/stat";
 		$Total = 0;
 		if(file_exists($file_path)){
@@ -261,7 +201,7 @@ class Admin extends Controller
 		return array($arr);
 	}
 	//获取流量信息
-	public function NetWork(){
+	private function NetWork(){
 		$strs = @file("/proc/net/dev"); 
 		for ($i = 0; $i < (count($strs)-2); $i++ )
 		{
@@ -278,7 +218,7 @@ class Admin extends Controller
 		return array($arr);
 	}
 	//获取内存用量
-	public function Memory(){
+	private function Memory(){
 		$file_path = "/proc/meminfo";
 		if(file_exists($file_path)){
 			$file_arr = file($file_path);
@@ -305,7 +245,7 @@ class Admin extends Controller
 		return array($arr);
 	}
 	//获取磁盘使用量
-	public function GetDisk(){
+	private function GetDisk(){
 		$total = disk_total_space(".");
 		$free = disk_free_space(".");
 		return round((1-$free/$total)*100, 0);

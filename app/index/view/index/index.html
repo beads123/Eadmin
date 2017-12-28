@@ -8,7 +8,7 @@
 	<link type="text/css" href="{$Request.domain}/bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet">
 	<link type="text/css" href="{$Request.domain}/css/theme.css" rel="stylesheet">
 	<link type="text/css" href="{$Request.domain}/images/icons/css/font-awesome.css" rel="stylesheet">
-	<link type="text/css" href='http://fonts.googleapis.com/css?family=Open+Sans:400italic,600italic,400,600' rel='stylesheet'>
+	<link type="text/css" href='https://fonts.googleapis.com/css?family=Open+Sans:400italic,600italic,400,600' rel='stylesheet'>
 </head>
 <body>
 
@@ -32,14 +32,14 @@
 		<div class="container">
 			<div class="row">
 				<div class="module module-login span4 offset4">
-					<form class="form-vertical" action="/index/login" method="post" >
+					<form class="form-vertical" action="##" method="post" >
 						<div class="module-head">
 							<h3>Sign In</h3>
 						</div>
 						<div class="module-body">
 							<div class="control-group">
 								<div class="controls row-fluid">
-									<input class="span12" type="text" id="inputEmail" placeholder="Username" name="name">
+									<input class="span12" type="text" id="inputname" placeholder="Username" name="name">
 								</div>
 							</div>
 							<div class="control-group">
@@ -51,7 +51,7 @@
 						<div class="module-foot">
 							<div class="control-group">
 								<div class="controls clearfix">
-									<input type="submit" class="btn btn-primary pull-right">Login
+									<button type="button" onclick="login()" class="btn btn-primary pull-right">登陆</button>
 								</div>
 							</div>
 						</div>
@@ -60,15 +60,31 @@
 			</div>
 		</div>
 	</div><!--/.wrapper-->
-
-	<div class="footer">
-		<div class="container">
-			 
-
-			<b class="copyright">&copy; 2014 Edmin - EGrappler.com </b> All rights reserved.
-		</div>
-	</div>
+	{include file="/admin/footer"}
 	<script src="{$Request.domain}/scripts/jquery-1.9.1.min.js" type="text/javascript"></script>
+	<script src="{$Request.domain}/scripts/md5.js" type="text/javascript"></script>
+	<script type="text/javascript">
+		function login(){
+				$.ajax({
+				type: "POST",
+				url: "/index/login",
+				data: {"name":$("#inputname").val(),"password":hex_md5($("#inputPassword").val())},
+				<!-- dataType: 'JSON', -->
+				timeout: 3000,
+				success: function (result) {
+					if (result=="yes")
+					{
+						window.location.href="index/admin";
+					}else 
+						alert("密码错误");
+				},
+				error: function(result) {
+					var jsonData = result;
+					alert(jsonData.responseText);
+				}
+			});
+		}
+	</script>
 	<script src="{$Request.domain}/scripts/jquery-ui-1.10.1.custom.min.js" type="text/javascript"></script>
 	<script src="{$Request.domain}/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
 </body>

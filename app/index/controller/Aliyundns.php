@@ -12,227 +12,149 @@ namespace app\index\controller;
 use think\Controller;
 use think\Db;
 use think\Request;
+use first\second\AliDomain;
+use first\second\TxDomain;
 
 class Aliyundns extends Controller
-{
-    private static $obj  = null;
-    public static function Obj ()
-    {
-        if(is_null(self::$obj))
-        {
-            self::$obj = new self();
-        }
-        return self::$obj;
-    }
-	
+{	
 	/**
 	 *	起始
 	 */
-	public function index(Request $request)
+	public function index()
 	{
-		date_default_timezone_set("GMT");
-		if ($request->method()=="POST"){
-			
-			switch(Request::instance()->post('status'))
+		$accesskey=Db::name('accesskey')->select();
+		if (Request::instance()->param("company")=="aliyun"){
+			$Parameter = array(
+				"accessKeyId"  => $accesskey[0]['alikey'],
+				"accessSecrec" => $accesskey[0]['aliSecret']
+			);
+			$this->Aliyun($Parameter);
+		}else if (Request::instance()->param("company")=="qcloud"){
+			$Parameter = array(
+				"SecretId"  => $accesskey[0]['SecretId'],
+				"SecretKey" => $accesskey[0]['SecretKey']
+			);
+			$this->Txyun($Parameter);
+		}else if (Request::instance()->param("company")=="jcloud"){
+			$Parameter = array(
+				"accessKeyId"  => $accesskey[0]['jdkey'],
+				"accessSecrec" => $accesskey[0]['jdSecret']
+			);
+		}else 
+			return "Error";
+	}
+	private function Aliyun($Parameter){
+		if (Request::instance()->method()=="POST"){
+			switch(Request::instance()->post('Action'))
 			{
+				case "DomainList":
+					new AliDomain(Request::instance()->method(),Request::instance()->post('Action'),"",$Parameter);
+					break;
 				case "Select":
 					if (Request::instance()->post('domain')!=""){
-						$this->DescribeDomainRecords();
+						new AliDomain(Request::instance()->method(),Request::instance()->post('Action'),Request::instance()->post('domain'),$Parameter);
 					}else
 						echo "domain Error";
 					break;
 				case "Create":
 					if (Request::instance()->post('domain')!="" && Request::instance()->post('host')!="" && Request::instance()->post('type')!="" && Request::instance()->post('ip')!=""){
-						$this->AddDomainRecord();
+						$Parameter['host']=Request::instance()->post('host');
+						$Parameter['type']=Request::instance()->post('type');
+						$Parameter['ip']=Request::instance()->post('ip');
+						new AliDomain(Request::instance()->method(),Request::instance()->post('Action'),Request::instance()->post('domain'),$Parameter);
 					}else 
 						echo "参数不完整!";
 					break;
 				case "Update":
 					if (Request::instance()->post('domain')!="" && Request::instance()->post('host')!="" && Request::instance()->post('type')!="" && Request::instance()->post('ip')!=""){
-						$this->UpdateDomainRecord();
+						$Parameter['host']=Request::instance()->post('host');
+						$Parameter['type']=Request::instance()->post('type');
+						$Parameter['ip']=Request::instance()->post('ip');
+						new AliDomain(Request::instance()->method(),Request::instance()->post('Action'),Request::instance()->post('domain'),$Parameter);
 					}else 
 						echo "参数不完整!";
 					break;
 				case "Delete":
 					if (Request::instance()->post('domain')!="" && Request::instance()->post('host')!="" && Request::instance()->post('type')){
-						$this->DeleteSubDomainRecords();
+						$Parameter['host']=Request::instance()->post('host');
+						$Parameter['type']=Request::instance()->post('type');
+						new AliDomain(Request::instance()->method(),Request::instance()->post('Action'),Request::instance()->post('domain'),$Parameter);
 					}else 
 						echo "参数不完整!";
 					break;
 				default:
 					echo "Error start";
 			}
-		}
-	}
-	
-	/**
-	 * 获取解析记录列表
-	 */
-    public function DescribeDomainRecords()
-    {
-        $requestParams = array(
-            "Action"    =>  "DescribeDomainRecords",
-            "DomainName"    =>  Request::instance()->post('domain')
-        );
-        $val =  $this->requestAli($requestParams);
-        $this->outPut($val);
-    }
-	
-	/**
-	 * 获取解析记录信息
-	 */
-    public function DescribeDomainRecords_two()
-    {
-        $requestParams = array(
-            "Action"    =>  "DescribeDomainRecords",
-            "DomainName"    =>  Request::instance()->post('domain')
-        );
-        $val = $this->requestAli($requestParams);
-		$val = json_decode($val,true);
-		for ($i=0;$i<$val["PageSize"];$i++){
-			if ($val["DomainRecords"]["Record"][$i]["RR"]==Request::instance()->post('host')){
-				return $val["DomainRecords"]["Record"][$i]["RecordId"];
-				break;
+		}else if (Request::instance()->method()=="GET"){
+			if (Request::instance()->get('Action')=="DomainList"){
+				new AliDomain(Request::instance()->method(),Request::instance()->post('Action'),Request::instance()->post('domain'),$Parameter);
 			}
-		}
-    }
-
-	/**
-     * 添加解析记录
-     */
-    public function AddDomainRecord()
-    {
-        $requestParams = array(
-            "Action"        =>  "AddDomainRecord",
-            "DomainName"    =>  Request::instance()->post('domain'),
-            "RR"            =>  Request::instance()->post('host'),
-            "Type"          =>  Request::instance()->post('type'),
-            "Value"         =>  Request::instance()->post('ip')
-        );
-        $val = $this->requestAli($requestParams);
-        $this->outPut($val);
-    }
-	
-    /**
-     * 修改解析记录
-     */
-    public function UpdateDomainRecord()
-    {
-        $requestParams = array(
-            "Action"        =>  "UpdateDomainRecord",
-            "RecordId"      =>  $this->DescribeDomainRecords_two(),
-            "RR"            =>  Request::instance()->post('host'),
-            "Type"          =>  Request::instance()->post('type'),
-            "Value"         =>  Request::instance()->post('ip')
-        );
-        $val = $this->requestAli($requestParams);
-        $this->outPut($val);
-    }
-	
-	/**
-     * 删除解析记录
-     */
-    public function DeleteDomainRecord()
-    {
-        $requestParams = array(
-            "Action"        =>  "DeleteDomainRecord",
-            "RecordId"      =>  $this->DescribeDomainRecords_two()
-        );
-        $val =  $this->requestAli($requestParams);
-        $this->outPut($val);
-    }
-	
-	/*
-	 * 删除主机记录对应的解析记录
-	 */
-	public function DeleteSubDomainRecords()
-	{
-        $requestParams = array(
-            "Action"        =>  "DeleteSubDomainRecords",
-			"DomainName"	=>	Request::instance()->post('domain'),
-            "RR"            =>  Request::instance()->post('host'),
-			"Type"			=>	Request::instance()->post('type')
-        );
-        $val = $this->requestAli($requestParams);
-        $this->outPut($val);
+		}else 
+			return "请求的参数不正确！";
 	}
-
-    private function requestAli($requestParams)
-    {
+	private function Txyun($Parameter)
+	{
+		if (Request::instance()->method()=="POST"){
+			switch(Request::instance()->post('Action'))
+			{
+				case "DomainList":
+					new TxDomain(Request::instance()->method(),Request::instance()->post('Action'),"",$Parameter);
+					break;
+				case "Select":
+					if (Request::instance()->post('domain')!=""){
+						new TxDomain(Request::instance()->method(),Request::instance()->post('Action'),Request::instance()->post('domain'),$Parameter);
+					}else
+						echo "domain Error";
+					break;
+				case "Create":
+					if (Request::instance()->post('domain')!="" && Request::instance()->post('host')!="" && Request::instance()->post('type')!="" && Request::instance()->post('ip')!=""){
+						$Parameter['host']=Request::instance()->post('host');
+						$Parameter['type']=Request::instance()->post('type');
+						$Parameter['ip']=Request::instance()->post('ip');
+						new TxDomain(Request::instance()->method(),Request::instance()->post('Action'),Request::instance()->post('domain'),$Parameter);
+					}else 
+						echo "参数不完整!";
+					break;
+				case "Update":
+					if (Request::instance()->post('domain')!="" && Request::instance()->post('host')!="" && Request::instance()->post('type')!="" && Request::instance()->post('ip')!=""&& Request::instance()->post('newip')!=""){
+						$Parameter['host']=Request::instance()->post('host');
+						$Parameter['type']=Request::instance()->post('type');
+						$Parameter['oldip']=Request::instance()->post('ip');
+						$Parameter['newip']=Request::instance()->post('newip');
+						new TxDomain(Request::instance()->method(),Request::instance()->post('Action'),Request::instance()->post('domain'),$Parameter);
+					}else 
+						echo "参数不完整!";
+					break;
+				case "Delete":
+					if (Request::instance()->post('domain')!="" && Request::instance()->post('host')!="" && Request::instance()->post('type') != "" && Request::instance()->post('ip')!=""){
+						$Parameter['host']=Request::instance()->post('host');
+						$Parameter['type']=Request::instance()->post('type');
+						$Parameter['ip']=Request::instance()->post('ip');
+						new TxDomain(Request::instance()->method(),Request::instance()->post('Action'),Request::instance()->post('domain'),$Parameter);
+					}else 
+						echo "参数不完整!";
+					break;
+				default:
+					echo "Error start";
+			}
+		}else if (Request::instance()->method()=="GET"){
+			if (Request::instance()->get('Action')=="DomainList"){
+				new TxDomain(Request::instance()->method(),Request::instance()->post('Action'),"",$Parameter);
+			}
+		}else 
+			return "请求的参数不正确！";
+	}
+	public function test (){
 		$accesskey=Db::name('accesskey')->select();
-		$accessKeyId  = $accesskey[0]['alikey'];
-		$accessSecrec = $accesskey[0]['aliSecret'];
-        $publicParams = array(
-            "Format"        =>  "JSON",
-            "Version"       =>  "2015-01-09",
-            "AccessKeyId"   =>  $accessKeyId,
-            "Timestamp"     =>  date("Y-m-d\TH:i:s\Z"),
-            "SignatureMethod"   =>  "HMAC-SHA1",
-            "SignatureVersion"  =>  "1.0",
-            "SignatureNonce"    =>  substr(md5(rand(1,99999999)),rand(1,9),14),
-        );
-
-        $params = array_merge($publicParams, $requestParams);
-        $params['Signature'] =  $this->sign($params, $accessSecrec);
-        $uri = http_build_query($params);
-        $url = 'http://alidns.aliyuncs.com/?'.$uri;
-        return $this->curl($url);
-    }
-
-
-    private function ip()
-    {
-        $ip = $this->curl("http://httpbin.org/ip");
-        $ip = json_decode($ip,true);
-        return $ip['origin'];
-    }
-
-    private function sign($params, $accessSecrec, $method="GET")
-    {
-        ksort($params);
-        $stringToSign = strtoupper($method).'&'.$this->percentEncode('/').'&';
-
-        $tmp = "";
-        foreach($params as $key=>$val){
-            $tmp .= '&'.$this->percentEncode($key).'='.$this->percentEncode($val);
-        }
-        $tmp = trim($tmp, '&');
-        $stringToSign = $stringToSign.$this->percentEncode($tmp);
-
-        $key  = $accessSecrec.'&';
-        $hmac = hash_hmac("sha1", $stringToSign, $key, true);
-
-        return base64_encode($hmac);
-    }
-
-
-    private function percentEncode($value=null)
-    {
-        $en = urlencode($value);
-        $en = str_replace("+", "%20", $en);
-        $en = str_replace("*", "%2A", $en);
-        $en = str_replace("%7E", "~", $en);
-		return $en;
-    }
-
-    private function curl($url)
-    {
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL,$url );
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1 );
-        $result=curl_exec ($ch);
-		$httpCode = curl_getinfo($ch,CURLINFO_HTTP_CODE);
-		if ($httpCode == 200){
-			return $result;
-		}else {
-			$result = json_decode($result,true);
-			return $result["Message"];
-		}
-    }
-
-    private function outPut($msg)
-    {
-		// $msg = json_decode($msg,true);
-        print_r($msg);
-    }
+		$Parameter = array(
+				"accessKeyId"  => $accesskey[0]['alikey'],
+				"accessSecrec" => $accesskey[0]['aliSecret'],
+				"host"		=> "test",
+				"type"		=>	"A",
+				"ip"		=>	"116.85.27.169",
+				"ip_two"	=>	"192.168.0.61"
+			);
+			// $this->Txyun($Parameter);
+		new AliDomain("POST","Update","niexin.me",$Parameter);
+	}
 }

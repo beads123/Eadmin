@@ -1,0 +1,25 @@
+<div id="light" class="white_content">
+	<table>
+	<form id="mail" onsubmit="return false" action="##" method="post">
+	<tr>
+		<td>收件人:</td>
+		<td><input type="text" name="toemail" /></td>
+	</tr>
+	<tr>
+		<td>标题:</td>
+		<td><input type="text" name="title" /></td>
+	</tr>
+	<tr>
+		<td>内容:</td>
+		<td><textarea name="content" cols="50" rows="8"></textarea></td>
+	</tr>
+	<tr>
+		<td></td>
+		<td>
+			<button type="button" onclick="sendmail()">发送</button>
+			<button type="button" onclick="document.getElementById('light').style.display='none';">取消</button>
+		</td>
+	</tr>
+	</form>
+	</table>
+</div>
